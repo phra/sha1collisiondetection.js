@@ -1,0 +1,3 @@
+[submodule "sha1collisiondetection"]
+	path = sha1collisiondetection
+	url = git@github.com:cr-marcstevens/sha1collisiondetection.git
