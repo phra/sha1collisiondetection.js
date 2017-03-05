@@ -4,9 +4,6 @@ TOOLSET := target
 TARGET := sha1collisiondetectionjs
 DEFS_Debug := \
 	'-DNODE_GYP_MODULE_NAME=sha1collisiondetectionjs' \
-	'-DUSING_UV_SHARED=1' \
-	'-DUSING_V8_SHARED=1' \
-	'-DV8_DEPRECATION_WARNINGS=1' \
 	'-D_LARGEFILE_SOURCE' \
 	'-D_FILE_OFFSET_BITS=64' \
 	'-DBUILDING_NODE_EXTENSION' \
@@ -34,17 +31,15 @@ CFLAGS_CC_Debug := \
 	-std=gnu++0x
 
 INCS_Debug := \
-	-I/home/phra/.node-gyp/7.6.0/include/node \
-	-I/home/phra/.node-gyp/7.6.0/src \
-	-I/home/phra/.node-gyp/7.6.0/deps/uv/include \
-	-I/home/phra/.node-gyp/7.6.0/deps/v8/include \
-	-I$(srcdir)/node_modules/nan
+	-I/usr/include/nodejs/include/node \
+	-I/usr/include/nodejs/src \
+	-I/usr/include/nodejs/deps/uv/include \
+	-I/usr/include/nodejs/deps/v8/include \
+	-I$(srcdir)/node_modules/nan \
+	-I$(srcdir)/sha1collisiondetection/lib
 
 DEFS_Release := \
 	'-DNODE_GYP_MODULE_NAME=sha1collisiondetectionjs' \
-	'-DUSING_UV_SHARED=1' \
-	'-DUSING_V8_SHARED=1' \
-	'-DV8_DEPRECATION_WARNINGS=1' \
 	'-D_LARGEFILE_SOURCE' \
 	'-D_FILE_OFFSET_BITS=64' \
 	'-DBUILDING_NODE_EXTENSION'
@@ -58,6 +53,8 @@ CFLAGS_Release := \
 	-Wno-unused-parameter \
 	-m64 \
 	-O3 \
+	-ffunction-sections \
+	-fdata-sections \
 	-fno-omit-frame-pointer
 
 # Flags passed to only C files.
@@ -70,11 +67,12 @@ CFLAGS_CC_Release := \
 	-std=gnu++0x
 
 INCS_Release := \
-	-I/home/phra/.node-gyp/7.6.0/include/node \
-	-I/home/phra/.node-gyp/7.6.0/src \
-	-I/home/phra/.node-gyp/7.6.0/deps/uv/include \
-	-I/home/phra/.node-gyp/7.6.0/deps/v8/include \
-	-I$(srcdir)/node_modules/nan
+	-I/usr/include/nodejs/include/node \
+	-I/usr/include/nodejs/src \
+	-I/usr/include/nodejs/deps/uv/include \
+	-I/usr/include/nodejs/deps/v8/include \
+	-I$(srcdir)/node_modules/nan \
+	-I$(srcdir)/sha1collisiondetection/lib
 
 OBJS := \
 	$(obj).target/$(TARGET)/lib/myobject.o \
@@ -82,6 +80,9 @@ OBJS := \
 
 # Add to the list of files we specially track dependencies for.
 all_deps += $(OBJS)
+
+# Make sure our dependencies are built before any of us.
+$(OBJS): | $(builddir)/lib.target/sha1collisiondetection.so $(obj).target/sha1collisiondetection.so
 
 # CFLAGS et al overrides must be target-local.
 # See "Target-specific Variable Values" in the GNU Make manual.
@@ -107,19 +108,24 @@ $(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj)/%.cc FORCE_DO_CMD
 LDFLAGS_Debug := \
 	-pthread \
 	-rdynamic \
-	-m64
+	-m64 \
+	-Wl,-rpath=\$$ORIGIN/lib.target/ \
+	-Wl,-rpath-link=\$(builddir)/lib.target/
 
 LDFLAGS_Release := \
 	-pthread \
 	-rdynamic \
-	-m64
+	-m64 \
+	-Wl,-rpath=\$$ORIGIN/lib.target/ \
+	-Wl,-rpath-link=\$(builddir)/lib.target/
 
-LIBS :=
+LIBS := \
+	/home/zio/code/sha1collisiondetection.js/sha1collisiondetection/bin/.libs/libdetectcoll.a
 
 $(obj).target/sha1collisiondetectionjs.node: GYP_LDFLAGS := $(LDFLAGS_$(BUILDTYPE))
 $(obj).target/sha1collisiondetectionjs.node: LIBS := $(LIBS)
 $(obj).target/sha1collisiondetectionjs.node: TOOLSET := $(TOOLSET)
-$(obj).target/sha1collisiondetectionjs.node: $(OBJS) FORCE_DO_CMD
+$(obj).target/sha1collisiondetectionjs.node: $(OBJS) $(obj).target/sha1collisiondetection.so FORCE_DO_CMD
 	$(call do_cmd,solink_module)
 
 all_deps += $(obj).target/sha1collisiondetectionjs.node

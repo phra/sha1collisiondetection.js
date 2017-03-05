@@ -3,4 +3,4 @@
 export builddir_name ?= ./build/.
 .PHONY: all
 all:
-	$(MAKE) sha1collisiondetectionjs sha1collisiondetection
+	$(MAKE) sha1collisiondetection sha1collisiondetectionjs

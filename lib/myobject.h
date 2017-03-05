@@ -2,6 +2,7 @@
 #define MYOBJECT_H
 
 #include <nan.h>
+#include "sha1.h"
 
 class MyObject : public Nan::ObjectWrap {
  public:

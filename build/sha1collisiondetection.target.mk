@@ -45,19 +45,19 @@ $(obj).target/sha1collisiondetection.so:  FORCE_DO_CMD
 all_deps += $(obj).target/sha1collisiondetection.so
 # Add target alias
 .PHONY: sha1collisiondetection
-sha1collisiondetection: $(builddir)/sha1collisiondetection.so
+sha1collisiondetection: $(builddir)/lib.target/sha1collisiondetection.so
 
 # Copy this to the shared library output path.
-$(builddir)/sha1collisiondetection.so: TOOLSET := $(TOOLSET)
-$(builddir)/sha1collisiondetection.so: $(obj).target/sha1collisiondetection.so FORCE_DO_CMD
+$(builddir)/lib.target/sha1collisiondetection.so: TOOLSET := $(TOOLSET)
+$(builddir)/lib.target/sha1collisiondetection.so: $(obj).target/sha1collisiondetection.so FORCE_DO_CMD
 	$(call do_cmd,copy)
 
-all_deps += $(builddir)/sha1collisiondetection.so
+all_deps += $(builddir)/lib.target/sha1collisiondetection.so
 # Short alias for building this shared library.
 .PHONY: sha1collisiondetection.so
-sha1collisiondetection.so: $(obj).target/sha1collisiondetection.so $(builddir)/sha1collisiondetection.so
+sha1collisiondetection.so: $(obj).target/sha1collisiondetection.so $(builddir)/lib.target/sha1collisiondetection.so
 
 # Add shared library to "all" target.
 .PHONY: all
-all: $(builddir)/sha1collisiondetection.so
+all: $(builddir)/lib.target/sha1collisiondetection.so
 
