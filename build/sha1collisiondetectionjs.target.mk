@@ -120,7 +120,7 @@ LDFLAGS_Release := \
 	-Wl,-rpath-link=\$(builddir)/lib.target/
 
 LIBS := \
-	/home/zio/code/sha1collisiondetection.js/sha1collisiondetection/bin/.libs/libdetectcoll.a
+	-Wl,-rpath,/home/zio/code/sha1collisiondetection.js/sha1collisiondetection/bin/.libs
 
 $(obj).target/sha1collisiondetectionjs.node: GYP_LDFLAGS := $(LDFLAGS_$(BUILDTYPE))
 $(obj).target/sha1collisiondetectionjs.node: LIBS := $(LIBS)
