@@ -19,7 +19,7 @@
         "<!(node -e \"require('nan')\")",
         "sha1collisiondetection/lib"
       ],
-      "libraries": [ "-Wl,-rpath,<!(pwd)/sha1collisiondetection/bin/.libs" ],
+      "libraries": [ "<!(pwd)/sha1collisiondetection/bin/.libs/libdetectcoll.a" ],
       "dependencies": [
         'sha1collisiondetection'
       ]

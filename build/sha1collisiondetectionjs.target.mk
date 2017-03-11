@@ -31,10 +31,10 @@ CFLAGS_CC_Debug := \
 	-std=gnu++0x
 
 INCS_Debug := \
-	-I/usr/include/nodejs/include/node \
-	-I/usr/include/nodejs/src \
-	-I/usr/include/nodejs/deps/uv/include \
-	-I/usr/include/nodejs/deps/v8/include \
+	-I/home/zio/.node-gyp/6.7.0/include/node \
+	-I/home/zio/.node-gyp/6.7.0/src \
+	-I/home/zio/.node-gyp/6.7.0/deps/uv/include \
+	-I/home/zio/.node-gyp/6.7.0/deps/v8/include \
 	-I$(srcdir)/node_modules/nan \
 	-I$(srcdir)/sha1collisiondetection/lib
 
@@ -53,8 +53,6 @@ CFLAGS_Release := \
 	-Wno-unused-parameter \
 	-m64 \
 	-O3 \
-	-ffunction-sections \
-	-fdata-sections \
 	-fno-omit-frame-pointer
 
 # Flags passed to only C files.
@@ -67,10 +65,10 @@ CFLAGS_CC_Release := \
 	-std=gnu++0x
 
 INCS_Release := \
-	-I/usr/include/nodejs/include/node \
-	-I/usr/include/nodejs/src \
-	-I/usr/include/nodejs/deps/uv/include \
-	-I/usr/include/nodejs/deps/v8/include \
+	-I/home/zio/.node-gyp/6.7.0/include/node \
+	-I/home/zio/.node-gyp/6.7.0/src \
+	-I/home/zio/.node-gyp/6.7.0/deps/uv/include \
+	-I/home/zio/.node-gyp/6.7.0/deps/v8/include \
 	-I$(srcdir)/node_modules/nan \
 	-I$(srcdir)/sha1collisiondetection/lib
 
@@ -120,7 +118,7 @@ LDFLAGS_Release := \
 	-Wl,-rpath-link=\$(builddir)/lib.target/
 
 LIBS := \
-	-Wl,-rpath,/home/zio/code/sha1collisiondetection.js/sha1collisiondetection/bin/.libs
+	/home/zio/code/sha1collisiondetection.js/sha1collisiondetection/bin/.libs/libdetectcoll.a
 
 $(obj).target/sha1collisiondetectionjs.node: GYP_LDFLAGS := $(LDFLAGS_$(BUILDTYPE))
 $(obj).target/sha1collisiondetectionjs.node: LIBS := $(LIBS)
